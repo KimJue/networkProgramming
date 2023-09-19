@@ -1,19 +1,18 @@
-/*** ¿©±â¼­ºÎÅÍ ÀÌ Ã¥ÀÇ ¸ğµç ¿¹Á¦¿¡¼­ °øÅëÀ¸·Î Æ÷ÇÔÇÏ¿© »ç¿ëÇÏ´Â ÄÚµåÀÌ´Ù. ***/
 
-#define _CRT_SECURE_NO_WARNINGS // ±¸Çü C ÇÔ¼ö »ç¿ë ½Ã °æ°í ²ô±â
-#define _WINSOCK_DEPRECATED_NO_WARNINGS // ±¸Çü ¼ÒÄÏ API »ç¿ë ½Ã °æ°í ²ô±â
+#define _CRT_SECURE_NO_WARNINGS // êµ¬í˜• C í•¨ìˆ˜ ì‚¬ìš© ì‹œ ê²½ê³  ë„ê¸°
+#define _WINSOCK_DEPRECATED_NO_WARNINGS // êµ¬í˜• ì†Œì¼“ API ì‚¬ìš© ì‹œ ê²½ê³  ë„ê¸°
 
-#include <winsock2.h> // À©¼Ó2 ¸ŞÀÎ Çì´õ
-#include <ws2tcpip.h> // À©¼Ó2 È®Àå Çì´õ
+#include <winsock2.h> // ìœˆì†2 ë©”ì¸ í—¤ë”
+#include <ws2tcpip.h> // ìœˆì†2 í™•ì¥ í—¤ë”
 
 #include <tchar.h> // _T(), ...
 #include <stdio.h> // printf(), ...
 #include <stdlib.h> // exit(), ...
 #include <string.h> // strncpy(), ...
 
-#pragma comment(lib, "ws2_32") // ws2_32.lib ¸µÅ©
+#pragma comment(lib, "ws2_32") // ws2_32.lib ë§í¬
 
-// ¼ÒÄÏ ÇÔ¼ö ¿À·ù Ãâ·Â ÈÄ Á¾·á
+// ì†Œì¼“ í•¨ìˆ˜ ì˜¤ë¥˜ ì¶œë ¥ í›„ ì¢…ë£Œ
 void err_quit(const char *msg)
 {
 	LPVOID lpMsgBuf;
@@ -27,7 +26,7 @@ void err_quit(const char *msg)
 	exit(1);
 }
 
-// ¼ÒÄÏ ÇÔ¼ö ¿À·ù Ãâ·Â
+// ì†Œì¼“ í•¨ìˆ˜ ì˜¤ë¥˜ ì¶œë ¥
 void err_display(const char *msg)
 {
 	LPVOID lpMsgBuf;
@@ -40,7 +39,7 @@ void err_display(const char *msg)
 	LocalFree(lpMsgBuf);
 }
 
-// ¼ÒÄÏ ÇÔ¼ö ¿À·ù Ãâ·Â
+// ì†Œì¼“ í•¨ìˆ˜ ì˜¤ë¥˜ ì¶œë ¥
 void err_display(int errcode)
 {
 	LPVOID lpMsgBuf;
@@ -49,22 +48,22 @@ void err_display(int errcode)
 		NULL, errcode,
 		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 		(char *)&lpMsgBuf, 0, NULL);
-	printf("[¿À·ù] %s\n", (char *)lpMsgBuf);
+	printf("[ì˜¤ë¥˜] %s\n", (char *)lpMsgBuf);
 	LocalFree(lpMsgBuf);
 }
 
-/*** ¿©±â±îÁö°¡ ÀÌ Ã¥ÀÇ ¸ğµç ¿¹Á¦¿¡¼­ °øÅëÀ¸·Î Æ÷ÇÔÇÏ¿© »ç¿ëÇÏ´Â ÄÚµåÀÌ´Ù. ***/
-/*** 2Àå ÀÌÈÄÀÇ ¿¹Á¦µéÀº Common.h¸¦ Æ÷ÇÔÇÏ´Â ¹æ½ÄÀ¸·Î ÀÌ ÄÚµå¸¦ »ç¿ëÇÑ´Ù.  ***/
+/*** ì—¬ê¸°ê¹Œì§€ê°€ ì´ ì±…ì˜ ëª¨ë“  ì˜ˆì œì—ì„œ ê³µí†µìœ¼ë¡œ í¬í•¨í•˜ì—¬ ì‚¬ìš©í•˜ëŠ” ì½”ë“œì´ë‹¤. ***/
+/*** 2ì¥ ì´í›„ì˜ ì˜ˆì œë“¤ì€ Common.hë¥¼ í¬í•¨í•˜ëŠ” ë°©ì‹ìœ¼ë¡œ ì´ ì½”ë“œë¥¼ ì‚¬ìš©í•œë‹¤.  ***/
 
 #define SERVERPORT 9000
 #define BUFSIZE    512
 
-// TCP ¼­¹ö(IPv4)
+// TCP ì„œë²„(IPv4)
 DWORD WINAPI TCPServer4(LPVOID arg)
 {
 	int retval;
 
-	// ¼ÒÄÏ »ı¼º
+	// ì†Œì¼“ ìƒì„±
 	SOCKET listen_sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (listen_sock == INVALID_SOCKET) err_quit("socket()");
 
@@ -81,7 +80,7 @@ DWORD WINAPI TCPServer4(LPVOID arg)
 	retval = listen(listen_sock, SOMAXCONN);
 	if (retval == SOCKET_ERROR) err_quit("listen()");
 
-	// µ¥ÀÌÅÍ Åë½Å¿¡ »ç¿ëÇÒ º¯¼ö
+	// ë°ì´í„° í†µì‹ ì— ì‚¬ìš©í•  ë³€ìˆ˜
 	SOCKET client_sock;
 	struct sockaddr_in clientaddr;
 	int addrlen;
@@ -96,13 +95,13 @@ DWORD WINAPI TCPServer4(LPVOID arg)
 			break;
 		}
 
-		// Á¢¼ÓÇÑ Å¬¶óÀÌ¾ğÆ® Á¤º¸ Ãâ·Â
-		printf("\n[TCP ¼­¹ö] Å¬¶óÀÌ¾ğÆ® Á¢¼Ó: IP ÁÖ¼Ò=%s, Æ÷Æ® ¹øÈ£=%d\n",
+		// ì ‘ì†í•œ í´ë¼ì´ì–¸íŠ¸ ì •ë³´ ì¶œë ¥
+		printf("\n[TCP ì„œë²„] í´ë¼ì´ì–¸íŠ¸ ì ‘ì†: IP ì£¼ì†Œ=%s, í¬íŠ¸ ë²ˆí˜¸=%d\n",
 			inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
 
-		// Å¬¶óÀÌ¾ğÆ®¿Í µ¥ÀÌÅÍ Åë½Å
+		// í´ë¼ì´ì–¸íŠ¸ì™€ ë°ì´í„° í†µì‹ 
 		while (1) {
-			// µ¥ÀÌÅÍ ¹Ş±â
+			// ë°ì´í„° ë°›ê¸°
 			retval = recv(client_sock, buf, BUFSIZE, 0);
 			if (retval == SOCKET_ERROR) {
 				err_display("recv()");
@@ -111,32 +110,32 @@ DWORD WINAPI TCPServer4(LPVOID arg)
 			else if (retval == 0)
 				break;
 
-			// ¹ŞÀº µ¥ÀÌÅÍ Ãâ·Â
+			// ë°›ì€ ë°ì´í„° ì¶œë ¥
 			buf[retval] = '\0';
 			printf("%s", buf);
 		}
 
-		// ¼ÒÄÏ ´İ±â
+		// ì†Œì¼“ ë‹«ê¸°
 		closesocket(client_sock);
-		printf("[TCP ¼­¹ö] Å¬¶óÀÌ¾ğÆ® Á¾·á: IP ÁÖ¼Ò=%s, Æ÷Æ® ¹øÈ£=%d\n",
+		printf("[TCP ì„œë²„] í´ë¼ì´ì–¸íŠ¸ ì¢…ë£Œ: IP ì£¼ì†Œ=%s, í¬íŠ¸ ë²ˆí˜¸=%d\n",
 			inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
 	}
 
-	// ¼ÒÄÏ ´İ±â
+	// ì†Œì¼“ ë‹«ê¸°
 	closesocket(listen_sock);
 	return 0;
 }
 
-// TCP ¼­¹ö(IPv6)
+// TCP ì„œë²„(IPv6)
 DWORD WINAPI TCPServer6(LPVOID arg)
 {
 	int retval;
 
-	// ¼ÒÄÏ »ı¼º
+	// ì†Œì¼“ ìƒì„±
 	SOCKET listen_sock = socket(AF_INET6, SOCK_STREAM, 0);
 	if (listen_sock == INVALID_SOCKET) err_quit("socket()");
 
-	// µà¾ó ½ºÅÃÀ» ²ö´Ù. [Windows´Â ²¨Á® ÀÖÀ½(±âº»°ª). UNIX/Linux´Â OS¸¶´Ù ´Ù¸§]
+	// ë“€ì–¼ ìŠ¤íƒì„ ëˆë‹¤. [WindowsëŠ” êº¼ì ¸ ìˆìŒ(ê¸°ë³¸ê°’). UNIX/LinuxëŠ” OSë§ˆë‹¤ ë‹¤ë¦„]
 	int no = 1;
 	setsockopt(listen_sock, IPPROTO_IPV6, IPV6_V6ONLY, (const char *)&no, sizeof(no));
 
@@ -153,7 +152,7 @@ DWORD WINAPI TCPServer6(LPVOID arg)
 	retval = listen(listen_sock, SOMAXCONN);
 	if (retval == SOCKET_ERROR) err_quit("listen()");
 
-	// µ¥ÀÌÅÍ Åë½Å¿¡ »ç¿ëÇÒ º¯¼ö
+	// ë°ì´í„° í†µì‹ ì— ì‚¬ìš©í•  ë³€ìˆ˜
 	SOCKET client_sock;
 	struct sockaddr_in6 clientaddr;
 	int addrlen;
@@ -168,15 +167,15 @@ DWORD WINAPI TCPServer6(LPVOID arg)
 			break;
 		}
 
-		// Á¢¼ÓÇÑ Å¬¶óÀÌ¾ğÆ® Á¤º¸ Ãâ·Â
+		// ì ‘ì†í•œ í´ë¼ì´ì–¸íŠ¸ ì •ë³´ ì¶œë ¥
 		char ipaddr[INET6_ADDRSTRLEN];
 		inet_ntop(AF_INET6, &clientaddr.sin6_addr, ipaddr, sizeof(ipaddr));
-		printf("\n[TCP ¼­¹ö] Å¬¶óÀÌ¾ğÆ® Á¢¼Ó: IP ÁÖ¼Ò=%s, Æ÷Æ® ¹øÈ£=%d\n",
+		printf("\n[TCP ì„œë²„] í´ë¼ì´ì–¸íŠ¸ ì ‘ì†: IP ì£¼ì†Œ=%s, í¬íŠ¸ ë²ˆí˜¸=%d\n",
 			ipaddr, ntohs(clientaddr.sin6_port));
 
-		// Å¬¶óÀÌ¾ğÆ®¿Í µ¥ÀÌÅÍ Åë½Å
+		// í´ë¼ì´ì–¸íŠ¸ì™€ ë°ì´í„° í†µì‹ 
 		while (1) {
-			// µ¥ÀÌÅÍ ¹Ş±â
+			// ë°ì´í„° ë°›ê¸°
 			retval = recv(client_sock, buf, BUFSIZE, 0);
 			if (retval == SOCKET_ERROR) {
 				err_display("recv()");
@@ -185,36 +184,36 @@ DWORD WINAPI TCPServer6(LPVOID arg)
 			else if (retval == 0)
 				break;
 
-			// ¹ŞÀº µ¥ÀÌÅÍ Ãâ·Â
+			// ë°›ì€ ë°ì´í„° ì¶œë ¥
 			buf[retval] = '\0';
 			printf("%s", buf);
 		}
 
-		// ¼ÒÄÏ ´İ±â
+		// ì†Œì¼“ ë‹«ê¸°
 		closesocket(client_sock);
-		printf("[TCP ¼­¹ö] Å¬¶óÀÌ¾ğÆ® Á¾·á: IP ÁÖ¼Ò=%s, Æ÷Æ® ¹øÈ£=%d\n",
+		printf("[TCP ì„œë²„] í´ë¼ì´ì–¸íŠ¸ ì¢…ë£Œ: IP ì£¼ì†Œ=%s, í¬íŠ¸ ë²ˆí˜¸=%d\n",
 			ipaddr, ntohs(clientaddr.sin6_port));
 	}
 
-	// ¼ÒÄÏ ´İ±â
+	// ì†Œì¼“ ë‹«ê¸°
 	closesocket(listen_sock);
 	return 0;
 }
 
 int main(int argc, char *argv[])
 {
-	// À©¼Ó ÃÊ±âÈ­
+	// ìœˆì† ì´ˆê¸°í™”
 	WSADATA wsa;
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 		return 1;
 
-	// ¸ÖÆ¼½º·¹µå¸¦ ÀÌ¿ëÇÏ¿© µÎ °³ÀÇ ¼­¹ö¸¦ µ¿½Ã¿¡ ±¸µ¿ÇÑ´Ù.
+	// ë©€í‹°ìŠ¤ë ˆë“œë¥¼ ì´ìš©í•˜ì—¬ ë‘ ê°œì˜ ì„œë²„ë¥¼ ë™ì‹œì— êµ¬ë™í•œë‹¤.
 	HANDLE hThread[2];
 	hThread[0] = CreateThread(NULL, 0, TCPServer4, NULL, 0, NULL);
 	hThread[1] = CreateThread(NULL, 0, TCPServer6, NULL, 0, NULL);
 	WaitForMultipleObjects(2, hThread, TRUE, INFINITE);
 
-	// À©¼Ó Á¾·á
+	// ìœˆì† ì¢…ë£Œ
 	WSACleanup();
 	return 0;
 }
